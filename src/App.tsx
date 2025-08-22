@@ -42,7 +42,7 @@ function App() {
           }}
         >
           {/* Overlay */}
-          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div className="absolute inset-0 bg-orange-900 opacity-50"></div>
           {/* Content */}
           <div className="relative z-10 flex flex-col items-center justify-center py-16 w-full">
             <h1 className="text-[85px] font-bold leading-tight text-center text-white">
