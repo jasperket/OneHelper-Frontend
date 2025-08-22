@@ -1,69 +1,48 @@
-# React + TypeScript + Vite
+# OneHelper Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Problem
 
-Currently, two official plugins are available:
+Many people struggle with managing their daily schedules and maintaining healthy sleep patterns. Without proper tracking and insights, it's difficult to optimize productivity and understand how sleep affects daily performance.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Users
 
-## Expanding the ESLint configuration
+- Individuals who want to better manage their time and tasks
+- People looking to track and improve their sleep habits
+- Anyone seeking insights into their productivity patterns and sleep quality
+- Users who prefer a unified platform for schedule and sleep management
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Top Features
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Task Management**: Create and manage to-do lists with priorities, durations, and detailed notes
+- **Schedule Planning**: Comprehensive date planner for viewing and organizing scheduled tasks
+- **Sleep Tracking**: Monitor sleep patterns with detailed logging and analytics
+- **Progress Analytics**: Dashboard with charts and statistics for productivity and sleep insights
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## How to Run
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+
+- Node.js (version 18 or higher)
+
+### Setup
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd onehelper
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to `http://localhost:5173`
