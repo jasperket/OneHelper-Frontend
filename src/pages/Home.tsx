@@ -5,7 +5,7 @@ export default function HomePage() {
     <>
       <div className="min-h-screen flex flex-col">
         {/* Header */}
-        <header className="bg-white w-full border-b border-gray-300 h-16 flex items-center px-8 justify-between z-10">
+        <header className="bg-gray-50 w-full border-b border-gray-300 h-16 flex items-center px-8 justify-between z-10">
           <div className="paytoneOne text-[35px] font-bold">
             <span className="text-orange-500">One</span>
             <span className="text-green-600">Helper</span>
@@ -61,7 +61,7 @@ export default function HomePage() {
         </section>
 
         {/* Bottom Section with solid color */}
-        <section className="bg-[#1B3A2F] flex-1  py-12 px-4 flex flex-col items-center">
+        <section className="bg-green-950 flex-1  py-12 px-4 flex flex-col items-center">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl w-full">
             <div className="bg-[#1E0901] rounded-lg p-8 text-white flex flex-col items-center transform transition-transform duration-300 hover:scale-105 cursor-pointer hover:shadow-[0_0_20px_4px_rgba(255,165,0,0.4)]">
               <div className="text-3xl mb-4">📅</div>
