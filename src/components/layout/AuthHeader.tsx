@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 export default function AuthHeader() {
   return (
-    <header className="bg-gray-50">
+    <header className="bg-gray-50 text-gray-700">
       <nav className="mx-auto flex max-w-7xl items-center p-4">
         <h2 className="text-themeOrange text-2xl font-extrabold">
           One<span className="text-themeGreen">Helper</span>
