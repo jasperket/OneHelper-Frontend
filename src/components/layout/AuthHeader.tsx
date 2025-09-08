@@ -3,26 +3,26 @@ import { Link } from "react-router";
 export default function AuthHeader() {
   return (
     <header className="bg-gray-50">
-      <nav className="max-w-7xl mx-auto p-4 flex items-center">
-        <h2 className="text-2xl font-extrabold text-themeOrange">
+      <nav className="mx-auto flex max-w-7xl items-center p-4">
+        <h2 className="text-themeOrange text-2xl font-extrabold">
           One<span className="text-themeGreen">Helper</span>
         </h2>
-        <ul className="flex items-center gap-4 absolute left-2/4 -translate-x-2/4">
-          <Link to="/dashboard" className="hover:underline text-sm">
+        <ul className="absolute left-2/4 flex -translate-x-2/4 items-center gap-4">
+          <Link to="/dashboard" className="text-sm hover:underline">
             Dashboard
           </Link>
-          <Link to="/schedule" className="hover:underline text-sm">
+          <Link to="/schedule" className="text-sm hover:underline">
             Schedule
           </Link>
-          <Link to="/todo" className="hover:underline text-sm">
+          <Link to="/todo" className="text-sm hover:underline">
             To-do
           </Link>
-          <Link to="/sleep" className="hover:underline text-sm">
+          <Link to="/sleep" className="text-sm hover:underline">
             Sleep
           </Link>
         </ul>
         <div className="ml-auto flex items-center gap-4">
-          <div className="border rounded-full p-4 border-black"></div>
+          <div className="rounded-full border border-black p-4"></div>
           <p>Hello Norwen</p>
         </div>
       </nav>
