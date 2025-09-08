@@ -10,8 +10,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Pencil, Plus, Trash2 } from "lucide-react";
+import { tasks } from "@/placeholders/tasks";
 
 export default function ToDoPage() {
+  const types = [...new Set(tasks.map((task) => task.type))];
   return (
     <>
       <AuthHeader />
