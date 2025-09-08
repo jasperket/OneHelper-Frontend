@@ -1,6 +1,7 @@
 import AuthHeader from "@/components/layout/AuthHeader";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import NewTask from "@/components/ui/forms/NewTask";
 import {
   Select,
   SelectContent,
@@ -52,9 +53,7 @@ export default function ToDoPage() {
             </div>
           </div>
         </div>
-        <div className="rounded-xl bg-gray-200 p-8 text-gray-700">
-          <h2 className="text-2xl font-extrabold">Add Task</h2>
-        </div>
+        <NewTask />
       </main>
     </>
   );
