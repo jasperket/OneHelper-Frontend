@@ -6,6 +6,7 @@
 
 body {
   font-family: "Inter Variable", sans-serif;
+  background-color: var(--color-themeDarkGreen);
 }
 
 @theme inline {
@@ -48,6 +49,9 @@ body {
 
 @theme {
   --font-inter: "Inter Variable", sans-serif;
+  --color-themeGreen: var(--color-green-600);
+  --color-themeOrange: var(--color-orange-500);
+  --color-themeDarkGreen: var(--color-green-900);
 }
 
 :root {
