@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 export default function HomePage() {
   return (
     <>
@@ -19,12 +21,12 @@ export default function HomePage() {
               placeholder="password"
               className="px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             />
-            <button className="bg-orange-500 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-orange-600 transition-colors duration-200 cursor-pointer">
+            <Button className="bg-orange-500 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-orange-600 transition-colors duration-200 cursor-pointer">
               Log in
-            </button>
-            <button className="bg-green-600 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition-colors duration-200 cursor-pointer">
+            </Button>
+            <Button className="bg-green-600 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition-colors duration-200 cursor-pointer">
               Sign-up
-            </button>
+            </Button>
           </div>
         </header>
 
