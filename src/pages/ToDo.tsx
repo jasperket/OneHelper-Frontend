@@ -1,7 +1,7 @@
 import AuthHeader from "@/components/layout/AuthHeader";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import NewTask from "@/components/ui/forms/NewTask";
+import NewTask from "@/components/todo/NewTask";
 import {
   Select,
   SelectContent,
