@@ -25,10 +25,31 @@ export default function NewTask({ onCreated }: NewTaskProps) {
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState<string>("0");
   const [busy, setBusy] = useState(false);
+  const [errors, setErrors] = useState<{
+    title?: string;
+    type?: string;
+    start?: string;
+    end?: string;
+  }>({});
+
+  const validate = () => {
+    const nextErrors: {
+      title?: string;
+      type?: string;
+      start?: string;
+      end?: string;
+    } = {};
+    if (!title.trim()) nextErrors.title = "Title is required";
+    if (!type.trim()) nextErrors.type = "Type is required";
+    if (!start) nextErrors.start = "Start time is required";
+    if (!end) nextErrors.end = "End time is required";
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !type || !start || !end) return;
+    if (!validate()) return;
     const payload: ToDo = {
       title,
       description: description || undefined,
@@ -71,8 +92,16 @@ export default function NewTask({ onCreated }: NewTaskProps) {
               type="text"
               placeholder="Enter task title"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                if (errors.title)
+                  setErrors((p) => ({ ...p, title: undefined }));
+              }}
+              required
             />
+            {errors.title ? (
+              <span className="text-sm text-red-600">{errors.title}</span>
+            ) : null}
           </div>
           <div className="flex flex-1 flex-col gap-2">
             <Label htmlFor="type">Type *</Label>
@@ -83,8 +112,15 @@ export default function NewTask({ onCreated }: NewTaskProps) {
               type="text"
               placeholder="Enter task type"
               value={type}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) => {
+                setType(e.target.value);
+                if (errors.type) setErrors((p) => ({ ...p, type: undefined }));
+              }}
+              required
             />
+            {errors.type ? (
+              <span className="text-sm text-red-600">{errors.type}</span>
+            ) : null}
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="priority">Priority</Label>
@@ -110,8 +146,16 @@ export default function NewTask({ onCreated }: NewTaskProps) {
               id="start"
               name="start"
               value={start}
-              onChange={(e) => setStart(e.target.value)}
+              onChange={(e) => {
+                setStart(e.target.value);
+                if (errors.start)
+                  setErrors((p) => ({ ...p, start: undefined }));
+              }}
+              required
             />
+            {errors.start ? (
+              <span className="text-sm text-red-600">{errors.start}</span>
+            ) : null}
           </div>
           <div className="flex flex-1 flex-col gap-2">
             <Label htmlFor="end">End Time *</Label>
@@ -121,8 +165,15 @@ export default function NewTask({ onCreated }: NewTaskProps) {
               id="end"
               name="end"
               value={end}
-              onChange={(e) => setEnd(e.target.value)}
+              onChange={(e) => {
+                setEnd(e.target.value);
+                if (errors.end) setErrors((p) => ({ ...p, end: undefined }));
+              }}
+              required
             />
+            {errors.end ? (
+              <span className="text-sm text-red-600">{errors.end}</span>
+            ) : null}
           </div>
         </div>
         <div className="flex flex-col gap-2">
@@ -156,6 +207,7 @@ export default function NewTask({ onCreated }: NewTaskProps) {
             setEnd("");
             setDescription("");
             setPriority("0");
+            setErrors({});
           }}
         >
           Cancel
