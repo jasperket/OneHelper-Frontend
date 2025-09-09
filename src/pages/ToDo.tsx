@@ -1,6 +1,5 @@
 import AuthHeader from "@/components/layout/AuthHeader";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import NewTask from "@/components/todo/NewTask";
 import {
   Select,
@@ -9,11 +8,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Pencil, Plus, Trash2 } from "lucide-react";
-import { tasks } from "@/placeholders/tasks";
+import { Plus } from "lucide-react";
+import TaskList from "@/components/todo/TaskList";
+import { useCallback, useEffect, useState } from "react";
+import { getToDos } from "@/services/toDoClient";
+import type { ToDoWithId } from "@/models/Todo";
 
 export default function ToDoPage() {
-  const types = [...new Set(tasks.map((task) => task.type))];
+  const [tasks, setTasks] = useState<ToDoWithId[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const loadTasks = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await getToDos();
+      // Backend may return ToDo[] without id; if so, adjust typing. Assuming id is present.
+      setTasks(data as unknown as ToDoWithId[]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadTasks();
+  }, [loadTasks]);
   return (
     <>
       <AuthHeader>
@@ -40,22 +58,18 @@ export default function ToDoPage() {
                   New Task
                 </Button>
               </div>
-              <div className="mt-8 space-y-4">
-                <div className="flex items-center justify-between gap-4 rounded-lg bg-gray-50 p-4 text-gray-700">
-                  <Checkbox className="data-[state=checked]:bg-themeOrange data-[state=checked]: data-[state=checked]:border-themeOrange border-themeOrange" />
-                  <div className="flex-1">
-                    <p className="text-lg font-bold">Title is here</p>
-                    <p className="text-sm text-gray-500">Description is here</p>
-                  </div>
-                  <div className="flex gap-4">
-                    <Pencil />
-                    <Trash2 />
-                  </div>
+
+              {/* Task List */}
+              {loading ? (
+                <div className="mt-8 rounded-lg bg-gray-50 p-6 text-center text-gray-500">
+                  Loading tasks...
                 </div>
-              </div>
+              ) : (
+                <TaskList items={tasks} onRefresh={loadTasks} />
+              )}
             </div>
           </div>
-          <NewTask />
+          <NewTask onCreated={loadTasks} />
         </div>
       </AuthHeader>
     </>
