@@ -86,6 +86,20 @@ export default function NewTask({ onCreated }: NewTaskProps) {
               onChange={(e) => setType(e.target.value)}
             />
           </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="priority">Priority</Label>
+            <Select value={priority} onValueChange={setPriority}>
+              <SelectTrigger id="priority" className="bg-gray-50 text-gray-900">
+                <SelectValue placeholder="Select priority" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0">None</SelectItem>
+                <SelectItem value="1">Low</SelectItem>
+                <SelectItem value="2">Medium</SelectItem>
+                <SelectItem value="3">High</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <div className="flex gap-4">
           <div className="flex flex-1 flex-col gap-2">
@@ -110,20 +124,6 @@ export default function NewTask({ onCreated }: NewTaskProps) {
               onChange={(e) => setEnd(e.target.value)}
             />
           </div>
-        </div>
-        <div className="flex flex-1 flex-col gap-2">
-          <Label htmlFor="priority">Priority</Label>
-          <Select value={priority} onValueChange={setPriority}>
-            <SelectTrigger id="priority" className="bg-gray-50 text-gray-900">
-              <SelectValue placeholder="Select priority" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="0">None</SelectItem>
-              <SelectItem value="1">Low</SelectItem>
-              <SelectItem value="2">Medium</SelectItem>
-              <SelectItem value="3">High</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="description">Description</Label>
@@ -155,6 +155,7 @@ export default function NewTask({ onCreated }: NewTaskProps) {
             setStart("");
             setEnd("");
             setDescription("");
+            setPriority("0");
           }}
         >
           Cancel
