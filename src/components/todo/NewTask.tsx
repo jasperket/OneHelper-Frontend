@@ -94,7 +94,7 @@ export default function NewTask({ onCreated }: NewTaskProps) {
               value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
-                if (errors.title)
+                if (errors.title && e.target.value.trim())
                   setErrors((p) => ({ ...p, title: undefined }));
               }}
               required
@@ -114,7 +114,8 @@ export default function NewTask({ onCreated }: NewTaskProps) {
               value={type}
               onChange={(e) => {
                 setType(e.target.value);
-                if (errors.type) setErrors((p) => ({ ...p, type: undefined }));
+                if (errors.type && e.target.value.trim())
+                  setErrors((p) => ({ ...p, type: undefined }));
               }}
               required
             />
