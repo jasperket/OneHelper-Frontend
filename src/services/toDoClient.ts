@@ -11,8 +11,8 @@ export const createToDo = async (toDo: ToDo): Promise<ToDo> => {
   return response.data;
 };
 
-export const updateToDo = async (toDo: ToDoWithId): Promise<ToDo> => {
-  const response = await apiClient.put<ToDo>(`/ToDo/${toDo.id}`, toDo);
+export const updateToDo = async (id: number, body: ToDo): Promise<ToDo> => {
+  const response = await apiClient.put<ToDo>(`/ToDo/${id}`, body);
   return response.data;
 };
 

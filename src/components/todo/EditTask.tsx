@@ -10,21 +10,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import { createToDo } from "@/services/toDoClient";
-import type { ToDo } from "@/models/Todo";
+import type { ToDoWithId } from "@/models/Todo";
+import { updateToDo } from "@/services/toDoClient";
 import { validateToDo } from "@/lib/todoValidation";
 
-interface NewTaskProps {
-  onCreated?: () => void;
+interface EditTaskProps {
+  task: ToDoWithId;
+  onUpdated?: () => void;
+  onCancel?: () => void;
 }
 
-export default function NewTask({ onCreated }: NewTaskProps) {
-  const [title, setTitle] = useState("");
-  const [type, setType] = useState("");
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
-  const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState<string>("0");
+export default function EditTask({ task, onUpdated, onCancel }: EditTaskProps) {
+  const [title, setTitle] = useState(task.title);
+  const [type, setType] = useState(task.toDoType);
+  const [start, setStart] = useState(
+    new Date(task.startTime).toISOString().slice(0, 16),
+  );
+  const [end, setEnd] = useState(
+    new Date(task.endTime).toISOString().slice(0, 16),
+  );
+  const [description, setDescription] = useState(task.description ?? "");
+  const [priority, setPriority] = useState<string>(String(task.priorityLevel));
   const [busy, setBusy] = useState(false);
   const [errors, setErrors] = useState<{
     title?: string;
@@ -33,35 +39,24 @@ export default function NewTask({ onCreated }: NewTaskProps) {
     end?: string;
   }>({});
 
-  const validate = () => {
-    const nextErrors = validateToDo({ title, type, start, end });
-    setErrors(nextErrors);
-    return Object.keys(nextErrors).length === 0;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
-    const payload: ToDo = {
-      title: title.trim(),
-      description: description.trim() || undefined,
-      toDoType: type.trim(),
-      startTime: new Date(start).toISOString(),
-      endTime: new Date(end).toISOString(),
-      priorityLevel: Number(priority),
-      isCompleted: false,
-      userId: 1,
-    };
+    const nextErrors = validateToDo({ title, type, start, end });
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
     try {
       setBusy(true);
-      await createToDo(payload);
-      setTitle("");
-      setType("");
-      setStart("");
-      setEnd("");
-      setDescription("");
-      setPriority("0");
-      onCreated?.();
+      await updateToDo(task.id, {
+        title: title.trim(),
+        description: description.trim() || undefined,
+        toDoType: type.trim(),
+        startTime: new Date(start).toISOString(),
+        endTime: new Date(end).toISOString(),
+        priorityLevel: Number(priority),
+        isCompleted: task.isCompleted,
+        userId: task.userId,
+      });
+      onUpdated?.();
     } finally {
       setBusy(false);
     }
@@ -72,7 +67,7 @@ export default function NewTask({ onCreated }: NewTaskProps) {
       onSubmit={handleSubmit}
       className="rounded-xl bg-gray-200 p-8 text-gray-700"
     >
-      <h2 className="text-2xl font-bold">New Task</h2>
+      <h2 className="text-2xl font-bold">Edit Task</h2>
       <div className="mt-8 space-y-6">
         <div className="flex gap-4">
           <div className="flex flex-1 flex-col gap-2">
@@ -187,21 +182,13 @@ export default function NewTask({ onCreated }: NewTaskProps) {
           disabled={busy}
           className="bg-themeGreen flex-1 cursor-pointer hover:bg-green-700"
         >
-          Create Task
+          Save Changes
         </Button>
         <Button
           type="button"
           disabled={busy}
           className="flex-1 cursor-pointer border-2 border-red-600 bg-transparent text-red-600 hover:bg-red-600 hover:text-gray-50"
-          onClick={() => {
-            setTitle("");
-            setType("");
-            setStart("");
-            setEnd("");
-            setDescription("");
-            setPriority("0");
-            setErrors({});
-          }}
+          onClick={onCancel}
         >
           Cancel
         </Button>
