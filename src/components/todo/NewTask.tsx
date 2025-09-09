@@ -51,9 +51,9 @@ export default function NewTask({ onCreated }: NewTaskProps) {
     e.preventDefault();
     if (!validate()) return;
     const payload: ToDo = {
-      title,
-      description: description || undefined,
-      toDoType: type,
+      title: title.trim(),
+      description: description.trim() || undefined,
+      toDoType: type.trim(),
       startTime: new Date(start).toISOString(),
       endTime: new Date(end).toISOString(),
       priorityLevel: Number(priority),
