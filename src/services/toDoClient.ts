@@ -1,8 +1,8 @@
 import apiClient from "./apiClient";
 import type { ToDo, ToDoWithId } from "@/models/Todo";
 
-export const getToDos = async (): Promise<ToDo[]> => {
-  const response = await apiClient.get<ToDo[]>("/ToDo");
+export const getToDos = async (): Promise<ToDoWithId[]> => {
+  const response = await apiClient.get<ToDoWithId[]>("/ToDo");
   return response.data;
 };
 

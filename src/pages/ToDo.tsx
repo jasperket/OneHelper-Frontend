@@ -22,8 +22,7 @@ export default function ToDoPage() {
     try {
       setLoading(true);
       const data = await getToDos();
-      // Backend may return ToDo[] without id; if so, adjust typing. Assuming id is present.
-      setTasks(data as unknown as ToDoWithId[]);
+      setTasks(data);
     } finally {
       setLoading(false);
     }
