@@ -54,7 +54,12 @@ export default function ToDoPage() {
                     <SelectItem value="work">Work</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button className="bg-themeOrange cursor-pointer hover:bg-orange-600">
+                <Button
+                  className="bg-themeOrange cursor-pointer hover:bg-orange-600"
+                  onClick={() => {
+                    setEditingTask(null);
+                  }}
+                >
                   <Plus />
                   New Task
                 </Button>
