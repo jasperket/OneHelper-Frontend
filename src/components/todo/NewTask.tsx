@@ -1,24 +1,27 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import { Button } from "../ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useState } from "react";
-import { createToDo } from "@/services/toDoClient";
+} from "../ui/select";
 import type { ToDo } from "@/models/Todo";
 import { validateToDo } from "@/lib/todoValidation";
+import { createToDo } from "@/services/toDoClient";
 
 interface NewTaskProps {
   onCreated?: () => void;
+  taskTypes: string[];
+  setTaskTypes: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export default function NewTask({ onCreated }: NewTaskProps) {
+export default function NewTask({
+  onCreated,
+  taskTypes,
+  setTaskTypes,
+}: NewTaskProps) {
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
   const [start, setStart] = useState("");
@@ -33,6 +36,17 @@ export default function NewTask({ onCreated }: NewTaskProps) {
     end?: string;
   }>({});
 
+  // 🔑 for adding new type
+  const [newType, setNewType] = useState("");
+
+  const handleAddType = () => {
+    if (newType.trim() && !taskTypes.includes(newType)) {
+      setTaskTypes((prev) => [...prev, newType]);
+      setType(newType); // auto select new type
+      setNewType("");
+    }
+  };
+
   const validate = () => {
     const nextErrors = validateToDo({ title, type, start, end });
     setErrors(nextErrors);
@@ -41,6 +55,7 @@ export default function NewTask({ onCreated }: NewTaskProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!validate()) return;
     const payload: ToDo = {
       title: title.trim(),
@@ -52,6 +67,7 @@ export default function NewTask({ onCreated }: NewTaskProps) {
       isCompleted: false,
       userId: 1,
     };
+    console.log("Creating ToDo:", payload);
     try {
       setBusy(true);
       await createToDo(payload);
@@ -68,144 +84,105 @@ export default function NewTask({ onCreated }: NewTaskProps) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-xl bg-gray-200 p-8 text-gray-700"
-    >
-      <h2 className="text-2xl font-bold">New Task</h2>
-      <div className="mt-8 space-y-6">
-        <div className="flex gap-4">
-          <div className="flex flex-1 flex-col gap-2">
-            <Label htmlFor="title">Title *</Label>
-            <Input
-              className="bg-gray-50"
-              id="title"
-              name="title"
-              type="text"
-              placeholder="Enter task title"
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-                if (errors.title && e.target.value.trim())
-                  setErrors((p) => ({ ...p, title: undefined }));
-              }}
-              required
-            />
-            {errors.title ? (
-              <span className="text-sm text-red-600">{errors.title}</span>
-            ) : null}
-          </div>
-          <div className="flex flex-1 flex-col gap-2">
-            <Label htmlFor="type">Type *</Label>
-            <Input
-              className="bg-gray-50"
-              id="type"
-              name="type"
-              type="text"
-              placeholder="Enter task type"
-              value={type}
-              onChange={(e) => {
-                setType(e.target.value);
-                if (errors.type && e.target.value.trim())
-                  setErrors((p) => ({ ...p, type: undefined }));
-              }}
-              required
-            />
-            {errors.type ? (
-              <span className="text-sm text-red-600">{errors.type}</span>
-            ) : null}
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="priority">Priority</Label>
-            <Select value={priority} onValueChange={setPriority}>
-              <SelectTrigger id="priority" className="bg-gray-50 text-gray-900">
-                <SelectValue placeholder="Select priority" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="0">None</SelectItem>
-                <SelectItem value="1">Low</SelectItem>
-                <SelectItem value="2">Medium</SelectItem>
-                <SelectItem value="3">High</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        <div className="flex gap-4">
-          <div className="flex flex-1 flex-col gap-2">
-            <Label htmlFor="start">Start Time *</Label>
-            <input
-              type="datetime-local"
-              className="rounded-lg bg-gray-50 p-1.5"
-              id="start"
-              name="start"
-              value={start}
-              onChange={(e) => {
-                setStart(e.target.value);
-                if (errors.start)
-                  setErrors((p) => ({ ...p, start: undefined }));
-              }}
-              required
-            />
-            {errors.start ? (
-              <span className="text-sm text-red-600">{errors.start}</span>
-            ) : null}
-          </div>
-          <div className="flex flex-1 flex-col gap-2">
-            <Label htmlFor="end">End Time *</Label>
-            <input
-              type="datetime-local"
-              className="rounded-lg bg-gray-50 p-1.5"
-              id="end"
-              name="end"
-              value={end}
-              onChange={(e) => {
-                setEnd(e.target.value);
-                if (errors.end) setErrors((p) => ({ ...p, end: undefined }));
-              }}
-              required
-            />
-            {errors.end ? (
-              <span className="text-sm text-red-600">{errors.end}</span>
-            ) : null}
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            className="bg-gray-50"
-            id="description"
-            name="description"
-            placeholder="Enter task description (optional)"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+    <div className="rounded-2xl bg-gray-100 p-6 shadow-md">
+      <h2 className="mb-4 text-xl font-bold">New Task</h2>
+
+      {/* Title */}
+      <input
+        type="text"
+        placeholder="Enter task title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        className="mb-3 w-full rounded-md border border-gray-300 p-2"
+        required
+      />
+
+      {/* Type */}
+      <div className="mb-3">
+        <label className="mb-1 block font-medium">Type *</label>
+        <Select value={type} onValueChange={setType}>
+          <SelectTrigger className="w-full bg-white">
+            <SelectValue placeholder="Select type" />
+          </SelectTrigger>
+          <SelectContent>
+            {taskTypes.map((t) => (
+              <SelectItem key={t} value={t}>
+                {t}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {/* Input + Add button */}
+        <div className="mt-2 flex gap-2">
+          <input
+            type="text"
+            placeholder="Input Task Type"
+            value={newType}
+            onChange={(e) => setNewType(e.target.value)}
+            className="flex-1 rounded-md border border-gray-300 p-2"
           />
+          <Button
+            type="button"
+            onClick={handleAddType}
+            className="bg-green-500 text-white hover:bg-green-600"
+          >
+            Add
+          </Button>
         </div>
       </div>
-      <div className="mt-8 flex gap-4">
+
+      {/* Priority */}
+      <div className="mb-3">
+        <label className="mb-1 block font-medium">Priority</label>
+        <select
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+          className="w-full rounded-md border border-gray-300 p-2"
+        >
+          <option value="0">None</option>
+          <option value="1">Low</option>
+          <option value="2">Medium</option>
+          <option value="3">High</option>
+        </select>
+      </div>
+
+      {/* Start & End Time */}
+      <div className="mb-3 grid grid-cols-2 gap-2">
+        <input
+          type="datetime-local"
+          value={start}
+          onChange={(e) => setStart(e.target.value)}
+          className="rounded-md border border-gray-300 p-2"
+        />
+        <input
+          type="datetime-local"
+          value={end}
+          onChange={(e) => setEnd(e.target.value)}
+          className="rounded-md border border-gray-300 p-2"
+        />
+      </div>
+
+      {/* Description */}
+      <textarea
+        placeholder="Enter task description (optional)"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        className="mb-3 w-full rounded-md border border-gray-300 p-2"
+      />
+
+      {/* Buttons */}
+      <div className="flex justify-between">
         <Button
-          type="submit"
-          disabled={busy}
-          className="bg-themeGreen flex-1 cursor-pointer hover:bg-green-700"
+          onClick={handleSubmit}
+          className="bg-green-500 text-white hover:bg-green-600"
         >
           Create Task
         </Button>
-        <Button
-          type="button"
-          disabled={busy}
-          className="flex-1 cursor-pointer border-2 border-red-600 bg-transparent text-red-600 hover:bg-red-600 hover:text-gray-50"
-          onClick={() => {
-            setTitle("");
-            setType("");
-            setStart("");
-            setEnd("");
-            setDescription("");
-            setPriority("0");
-            setErrors({});
-          }}
-        >
+        <Button variant="outline" className="border-red-500 text-red-500">
           Cancel
         </Button>
       </div>
-    </form>
+    </div>
   );
 }
