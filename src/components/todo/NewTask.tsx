@@ -53,6 +53,16 @@ export default function NewTask({
     return Object.keys(nextErrors).length === 0;
   };
 
+  const clearFields = () => {
+    setTitle("");
+    setType("");
+    setStart("");
+    setEnd("");
+    setDescription("");
+    setPriority("0");
+    setErrors({});
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -70,12 +80,7 @@ export default function NewTask({
     try {
       setBusy(true);
       await createToDo(payload);
-      setTitle("");
-      setType("");
-      setStart("");
-      setEnd("");
-      setDescription("");
-      setPriority("0");
+      clearFields();
       onCreated?.();
     } finally {
       setBusy(false);
@@ -92,7 +97,7 @@ export default function NewTask({
         placeholder="Enter task title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="mb-3 w-full rounded-md border border-gray-300 p-2"
+        className="mb-3 w-full rounded-md border border-gray-300 bg-gray-50 p-2"
         required
       />
 
@@ -100,7 +105,7 @@ export default function NewTask({
       <div className="mb-3">
         <label className="mb-1 block font-medium">Type *</label>
         <Select value={type} onValueChange={setType}>
-          <SelectTrigger className="w-full bg-white">
+          <SelectTrigger className="w-full bg-white capitalize">
             <SelectValue placeholder="Select type" />
           </SelectTrigger>
           <SelectContent>
@@ -119,12 +124,12 @@ export default function NewTask({
             placeholder="Input Task Type"
             value={newType}
             onChange={(e) => setNewType(e.target.value)}
-            className="flex-1 rounded-md border border-gray-300 p-2"
+            className="flex-1 rounded-md border border-gray-300 bg-gray-50 p-2"
           />
           <Button
             type="button"
             onClick={handleAddType}
-            className="bg-green-500 text-white hover:bg-green-600"
+            className="cursor-pointer bg-green-500 text-white hover:bg-green-600"
           >
             Add
           </Button>
@@ -137,7 +142,7 @@ export default function NewTask({
         <select
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
-          className="w-full rounded-md border border-gray-300 p-2"
+          className="w-full rounded-md border border-gray-300 bg-gray-50 p-2"
         >
           <option value="0">None</option>
           <option value="1">Low</option>
@@ -152,13 +157,13 @@ export default function NewTask({
           type="datetime-local"
           value={start}
           onChange={(e) => setStart(e.target.value)}
-          className="rounded-md border border-gray-300 p-2"
+          className="rounded-md border border-gray-300 bg-gray-50 p-2"
         />
         <input
           type="datetime-local"
           value={end}
           onChange={(e) => setEnd(e.target.value)}
-          className="rounded-md border border-gray-300 p-2"
+          className="rounded-md border border-gray-300 bg-gray-50 p-2"
         />
       </div>
 
@@ -167,18 +172,22 @@ export default function NewTask({
         placeholder="Enter task description (optional)"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        className="mb-3 w-full rounded-md border border-gray-300 p-2"
+        className="mb-3 w-full rounded-md border border-gray-300 bg-gray-50 p-2"
       />
 
       {/* Buttons */}
-      <div className="flex justify-between">
+      <div className="flex gap-4">
         <Button
           onClick={handleSubmit}
-          className="bg-green-500 text-white hover:bg-green-600"
+          className="flex-1 cursor-pointer bg-green-500 text-white hover:bg-green-600"
         >
           Create Task
         </Button>
-        <Button variant="outline" className="border-red-500 text-red-500">
+        <Button
+          variant="outline"
+          className="flex-1 cursor-pointer border-red-500 bg-transparent text-red-500 hover:bg-red-500 hover:text-gray-50"
+          onClick={clearFields}
+        >
           Cancel
         </Button>
       </div>
