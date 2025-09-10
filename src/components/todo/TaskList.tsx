@@ -8,15 +8,25 @@ import { useState } from "react";
 interface TaskListProps {
   items: ToDoWithId[];
   onRefresh: () => void;
+  onEdit: (task: ToDoWithId) => void;
 }
 
-export default function TaskList({ items, onRefresh }: TaskListProps) {
+export default function TaskList({ items, onRefresh, onEdit }: TaskListProps) {
   const [busyId, setBusyId] = useState<number | null>(null);
 
   const handleToggleCompleted = async (item: ToDoWithId) => {
     try {
       setBusyId(item.id);
-      await updateToDo({ ...item, isCompleted: !item.isCompleted });
+      await updateToDo(item.id, {
+        title: item.title,
+        description: item.description,
+        toDoType: item.toDoType,
+        startTime: item.startTime,
+        endTime: item.endTime,
+        priorityLevel: item.priorityLevel,
+        isCompleted: !item.isCompleted,
+        userId: item.userId,
+      });
       onRefresh();
     } finally {
       setBusyId(null);
@@ -53,12 +63,16 @@ export default function TaskList({ items, onRefresh }: TaskListProps) {
             ) : null}
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" className="p-2" disabled>
+            <Button
+              variant="ghost"
+              className="p-2"
+              onClick={() => onEdit(task)}
+            >
               <Pencil />
             </Button>
             <Button
               variant="ghost"
-              className="p-2 text-red-600 hover:text-red-700"
+              className="cursor-pointer p-2 text-red-600 hover:text-red-700"
               onClick={() => handleDelete(task.id)}
               disabled={busyId === task.id}
               aria-label="Delete task"

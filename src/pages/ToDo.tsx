@@ -13,10 +13,12 @@ import TaskList from "@/components/todo/TaskList";
 import { useCallback, useEffect, useState } from "react";
 import { getToDos } from "@/services/toDoClient";
 import type { ToDoWithId } from "@/models/Todo";
+import EditTask from "@/components/todo/EditTask";
 
 export default function ToDoPage() {
   const [tasks, setTasks] = useState<ToDoWithId[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [editingTask, setEditingTask] = useState<ToDoWithId | null>(null);
 
   const loadTasks = useCallback(async () => {
     try {
@@ -52,7 +54,12 @@ export default function ToDoPage() {
                     <SelectItem value="work">Work</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button className="bg-themeOrange cursor-pointer hover:bg-orange-600">
+                <Button
+                  className="bg-themeOrange cursor-pointer hover:bg-orange-600"
+                  onClick={() => {
+                    setEditingTask(null);
+                  }}
+                >
                   <Plus />
                   New Task
                 </Button>
@@ -64,11 +71,26 @@ export default function ToDoPage() {
                   Loading tasks...
                 </div>
               ) : (
-                <TaskList items={tasks} onRefresh={loadTasks} />
+                <TaskList
+                  items={tasks}
+                  onRefresh={loadTasks}
+                  onEdit={setEditingTask}
+                />
               )}
             </div>
           </div>
-          <NewTask onCreated={loadTasks} />
+          {editingTask ? (
+            <EditTask
+              task={editingTask}
+              onUpdated={() => {
+                setEditingTask(null);
+                loadTasks();
+              }}
+              onCancel={() => setEditingTask(null)}
+            />
+          ) : (
+            <NewTask onCreated={loadTasks} />
+          )}
         </div>
       </AuthHeader>
     </>
