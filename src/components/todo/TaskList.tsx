@@ -4,6 +4,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import type { ToDoWithId } from "@/models/Todo";
 import { deleteToDo, updateToDo } from "@/services/toDoClient";
 import { useState } from "react";
+import { formatDate } from "@/lib/utils";
 
 interface TaskListProps {
   items: ToDoWithId[];
@@ -58,11 +59,13 @@ export default function TaskList({ items, onRefresh, onEdit }: TaskListProps) {
           />
           <div className="flex-1">
             <p className="text-lg font-bold">{task.title}</p>
+            <p className="text-sm">Due: {formatDate(task.endTime)}</p>
             {task.description ? (
               <p className="text-sm text-gray-500">{task.description}</p>
             ) : null}
           </div>
           <div className="flex items-center gap-4">
+            <p className="text-sm">{task.toDoType}</p>
             <Button
               variant="ghost"
               className="cursor-pointer p-2"
