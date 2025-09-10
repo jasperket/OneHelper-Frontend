@@ -7,7 +7,6 @@ export interface ToDoWithId {
   toDoType: string;
   startTime: string;
   endTime: string;
-  taskType?: string;
   priorityLevel: number;
   isCompleted: boolean;
   userId: number;

@@ -67,7 +67,6 @@ export default function NewTask({
       isCompleted: false,
       userId: 1,
     };
-    console.log("Creating ToDo:", payload);
     try {
       setBusy(true);
       await createToDo(payload);
@@ -106,7 +105,7 @@ export default function NewTask({
           </SelectTrigger>
           <SelectContent>
             {taskTypes.map((t) => (
-              <SelectItem key={t} value={t}>
+              <SelectItem key={t} value={t} className="capitalize">
                 {t}
               </SelectItem>
             ))}
