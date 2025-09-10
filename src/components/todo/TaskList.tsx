@@ -65,7 +65,7 @@ export default function TaskList({ items, onRefresh, onEdit }: TaskListProps) {
             ) : null}
           </div>
           <div className="flex items-center gap-4">
-            <p className="text-sm">{task.toDoType}</p>
+            <p className="text-sm capitalize">{task.toDoType}</p>
             <Button
               variant="ghost"
               className="cursor-pointer p-2"
