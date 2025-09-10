@@ -65,7 +65,7 @@ export default function TaskList({ items, onRefresh, onEdit }: TaskListProps) {
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
-              className="p-2"
+              className="cursor-pointer p-2"
               onClick={() => onEdit(task)}
             >
               <Pencil />
