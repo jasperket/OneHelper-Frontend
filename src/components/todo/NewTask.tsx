@@ -103,7 +103,7 @@ export default function NewTask({
 
       {/* Type */}
       <div className="mb-3">
-        <label className="mb-1 block font-medium">Type *</label>
+        <label className="mb-1 block font-medium">Category *</label>
         <Select value={type} onValueChange={setType}>
           <SelectTrigger className="w-full bg-white capitalize">
             <SelectValue placeholder="Select type" />

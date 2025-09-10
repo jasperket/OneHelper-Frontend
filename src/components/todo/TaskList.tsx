@@ -15,7 +15,6 @@ interface TaskListProps {
 export default function TaskList({ items, onRefresh, onEdit }: TaskListProps) {
   const [busyId, setBusyId] = useState<number | null>(null);
 
-  
   const handleToggleCompleted = async (item: ToDoWithId) => {
     try {
       setBusyId(item.id);
@@ -61,13 +60,12 @@ export default function TaskList({ items, onRefresh, onEdit }: TaskListProps) {
           <div className="flex-1">
             <p className="text-lg font-bold">{task.title}</p>
             <p className="text-sm">Due: {formatDate(task.endTime)}</p>
-            <p className="text-sm capitalize">{task.toDoType}</p>
             {task.description ? (
               <p className="text-sm text-gray-500">{task.description}</p>
             ) : null}
           </div>
           <div className="flex items-center gap-4">
-            <p className="text-sm">{task.toDoType}</p>
+            <p className="text-sm capitalize">{task.toDoType}</p>
             <Button
               variant="ghost"
               className="cursor-pointer p-2"
